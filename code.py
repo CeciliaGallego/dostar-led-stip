@@ -1,3 +1,5 @@
+# type: ignore
+
 import board
 import busio
 import adafruit_dotstar as dotstar
@@ -5,16 +7,17 @@ import adafruit_dotstar as dotstar
 N_DOTS = 72
 BILATERAL = True # LEDs will turn on in both sides
 
-dots = dotstar.DotStar(board.GP10 board.GP11, N_DOTS, brightness=0.1)
+dots = dotstar.DotStar(board.GP2, board.GP3, N_DOTS, brightness=0.1)
 
 uart = busio.UART(board.GP0, board.GP1, baudrate=9600)
 
 # # # INITIALIZATION
 dots.fill((255, 0, 0))
+on_idx = slice(0, 2)
+on_idx_r = slice(-1, 1)
 
 # # # MAIN LOOP
 while True:
-    dots.fill((255, 0, 0))
 
     data = uart.read(1)    
     uart_value = data[0]
@@ -28,11 +31,14 @@ while True:
             
             # # Set the dot at the calculated index to white
             if 0 < index < N_DOTS-1:
-                dots.fill((255, 0, 0))
-                dots[index-1] = (255, 255, 255) 
-                dots[index] = (255, 255, 255) 
-                dots[-index-1] = (255, 255, 255) 
-                dots[-index] = (255, 255, 255) 
+                dots[on_idx]  = (255, 0, 0)
+                on_idx = slice(index-1, index+1)
+                
+                dots[on_idx_r]  = (255, 0, 0)
+                on_idx_r = slice(-index-1, -index+1)
+                
+                dots[on_idx] = (255, 255, 255)
+                dots[on_idx_r] = (255, 255, 255) 
             
         else:
             # Convert the UART value to an index for the dots
@@ -40,10 +46,9 @@ while True:
             
             # # Set the dot at the calculated index to white
             if 0 < index < N_DOTS-1:
-                dots.fill((255, 0, 0))
-                dots[index-1] = (255, 255, 255) 
-                dots[index] = (255, 255, 255) 
-                dots[index+1] = (255, 255, 255)
+                dots[on_idx] = (255, 0, 0)
+                on_idx = slice(index-1, index+2)
+                dots[on_idx] = (255, 255, 255)
     
     # Turn off all dots
     if uart_value == 200:
