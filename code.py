@@ -24,6 +24,23 @@ while True:
         data= uart.read(1)
         uart_value = data[0]
         
+        # Turn off all dots
+        if uart_value == 200:
+            dots.fill((0, 0, 0))
+            
+        # Turn on all dots to red
+        if uart_value == 201:
+            dots.fill((255, 0, 0)) 
+        
+        # Turn on bilateral mode
+        if uart_value == 210:
+            BILATERAL = True
+                
+        # Turn off bilateral mode
+        if uart_value == 211:
+            BILATERAL = False
+        
+        # Otherwise, ignore first iteration
         if FIRST_ITER:
             FIRST_ITER = False
             continue
@@ -64,19 +81,3 @@ while True:
                     dots[on_idx-1] = (255, 255, 255) 
                     dots[on_idx] = (255, 255, 255) 
                     dots[on_idx+1] = (255, 255, 255)
-        
-        # Turn off all dots
-        if uart_value == 200:
-            dots.fill((0, 0, 0))
-            
-        # Turn on all dots to red
-        if uart_value == 201:
-            dots.fill((255, 0, 0)) 
-        
-        # Turn on bilateral mode
-        if uart_value == 210:
-            BILATERAL = True
-                
-        # Turn off bilateral mode
-        if uart_value == 211:
-            BILATERAL = False
