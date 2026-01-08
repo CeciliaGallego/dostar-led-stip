@@ -17,9 +17,6 @@ on_idx = 1
 
 # # # MAIN LOOP
 while True:
-    
-    if LEDS_OFF:
-        dots.fill((0, 0, 0))
         
     if uart.in_waiting:
         
@@ -33,12 +30,10 @@ while True:
         # Turn off all dots
         if uart_value == 200:
             dots.fill((0, 0, 0))
-            LEDS_OFF = True
             
         # Turn on all dots to red
         if uart_value == 201:
             dots.fill((255, 0, 0)) 
-            LEDS_OFF = False
         
         # Turn on bilateral mode
         if uart_value == 210:
