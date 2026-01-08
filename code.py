@@ -6,7 +6,6 @@ import adafruit_dotstar as dotstar
 
 N_DOTS = 72
 BILATERAL = True # LEDs will turn on in both sides
-FIRST_ITER = True # To ignore the first UART value
 
 dots = dotstar.DotStar(board.GP2, board.GP3, N_DOTS, brightness=0.1)
 
@@ -24,6 +23,10 @@ while True:
         data= uart.read(1)
         uart_value = data[0]
         
+        # Ignore uart value 0 to avoid errors
+        if uart_value == 0:
+            continue
+        
         # Turn off all dots
         if uart_value == 200:
             dots.fill((0, 0, 0))
@@ -40,13 +43,8 @@ while True:
         if uart_value == 211:
             BILATERAL = False
         
-        # Otherwise, ignore first iteration
-        if FIRST_ITER:
-            FIRST_ITER = False
-            continue
-            
         # Turn on the corresponding LED
-        if 0 <= uart_value <= 100:
+        if 0 < uart_value <= 100:
             
             if BILATERAL:
                 # Convert the UART value to an index for the dots
