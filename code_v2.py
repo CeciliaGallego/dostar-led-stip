@@ -83,5 +83,5 @@ while True:
                     dots[on_idx] = (255, 255, 255) 
                     dots[on_idx+1] = (255, 255, 255)
                     
-    if LEDS_OFF:
-        dots.fill((0, 0, 0))
+        if LEDS_OFF:
+            dots.fill((0, 0, 0))
