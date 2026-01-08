@@ -18,14 +18,15 @@ on_idx = 1
 
 # # # MAIN LOOP
 while True:
-    
-    if LEDS_OFF:
-        dots.fill((0, 0, 0))
-        
+            
     if uart.in_waiting:
         
         data= uart.read(1)
         uart_value = data[0]
+        
+        # Ignore uart value 0 to avoid errors
+        if uart_value == 0:
+            continue
         
         # Turn off all dots
         if uart_value == 200:
@@ -81,3 +82,6 @@ while True:
                     dots[on_idx-1] = (255, 255, 255) 
                     dots[on_idx] = (255, 255, 255) 
                     dots[on_idx+1] = (255, 255, 255)
+                    
+    if LEDS_OFF:
+        dots.fill((0, 0, 0))
