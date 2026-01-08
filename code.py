@@ -6,6 +6,7 @@ import adafruit_dotstar as dotstar
 
 N_DOTS = 72
 BILATERAL = True # LEDs will turn on in both sides
+LEDS_OFF = True # Flag to mantain the LEDs off when pycontrol is not running a task
 
 dots = dotstar.DotStar(board.GP2, board.GP3, N_DOTS, brightness=0.1)
 
@@ -18,22 +19,23 @@ on_idx = 1
 # # # MAIN LOOP
 while True:
     
+    if LEDS_OFF:
+        dots.fill((0, 0, 0))
+        
     if uart.in_waiting:
         
         data= uart.read(1)
         uart_value = data[0]
         
-        # Ignore uart value 0
-        if uart_value == 0:
-            continue
-        
         # Turn off all dots
         if uart_value == 200:
             dots.fill((0, 0, 0))
+            LEDS_OFF = True
             
         # Turn on all dots to red
         if uart_value == 201:
             dots.fill((255, 0, 0)) 
+            LEDS_OFF = False
         
         # Turn on bilateral mode
         if uart_value == 210:
