@@ -28,16 +28,20 @@ while True:
         if uart_value == 0:
             continue
         
-        # Turn off all dots
-        if uart_value == 200:
-            dots.fill((0, 0, 0))
-            LEDS_OFF = True
-            
-        # Turn on all dots to red
+        # Turn on all dots to red and start leds
         if uart_value == 201:
             dots.fill((255, 0, 0)) 
             LEDS_OFF = False
         
+        # Keep LEDs off otherwise    
+        if LEDS_OFF:
+            dots.fill((0, 0, 0))
+        
+        # Turn off all dots and stop leds
+        if uart_value == 200:
+            dots.fill((0, 0, 0))
+            LEDS_OFF = True
+            
         # Turn on bilateral mode
         if uart_value == 210:
             BILATERAL = True
@@ -82,6 +86,3 @@ while True:
                     dots[on_idx-1] = (255, 255, 255) 
                     dots[on_idx] = (255, 255, 255) 
                     dots[on_idx+1] = (255, 255, 255)
-                    
-        if LEDS_OFF:
-            dots.fill((0, 0, 0))
