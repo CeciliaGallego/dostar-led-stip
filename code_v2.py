@@ -3,6 +3,7 @@
 import board
 import busio
 import adafruit_dotstar as dotstar
+from time import sleep
 
 N_DOTS = 72
 BILATERAL = True # LEDs will turn on in both sides
@@ -22,15 +23,16 @@ while True:
     # Keep LEDs off otherwise    
     if LEDS_OFF:
         dots.fill((0, 0, 0))
-                    
+        sleep(0.1)
+                            
     if uart.in_waiting:
         
         data= uart.read(1)
         uart_value = data[0]
         
-        # # Ignore uart value 0 to avoid errors
-        # if uart_value == 0:
-        #     continue
+        # Ignore uart value 0 to avoid errors
+        if uart_value == 0:
+            continue
         
         # Turn on all dots to red and start leds
         if uart_value == 201:
