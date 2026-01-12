@@ -20,10 +20,10 @@ while True:
         
     if uart.in_waiting:
         
-        data= uart.read(1)
+        data= uart.read(1) 
         uart_value = data[0]
         
-        # Ignore uart value 0 to avoid errors
+        # Ignore uart value 0
         if uart_value == 0:
             continue
         
