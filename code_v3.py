@@ -8,7 +8,7 @@ from time import sleep
 N_DOTS = 72
 BILATERAL = True # LEDs will turn on in both sides
 
-dots = dotstar.DotStar(board.GP2, board.GP3, N_DOTS, brightness=0.1, auto_write: False)
+dots = dotstar.DotStar(board.GP2, board.GP3, N_DOTS, brightness=0.1, auto_write=False)
 
 uart = busio.UART(board.GP0, board.GP1, baudrate=9600)
 
@@ -32,10 +32,12 @@ while True:
         # Turn on all dots to red and start leds
         elif uart_value == 201:
             dots.fill((255, 0, 0)) 
+            dots.show()
         
         # Turn off all dots and stop leds
         elif uart_value == 200:
             dots.fill((0, 0, 0))
+            dots.show()
             
         # Turn on bilateral mode
         elif uart_value == 210:
@@ -82,4 +84,4 @@ while True:
                     dots[on_idx] = (255, 255, 255) 
                     dots[on_idx+1] = (255, 255, 255)
                     
-        dots.show()
+            dots.show()
