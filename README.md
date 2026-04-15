@@ -1,12 +1,18 @@
 # dostar-led-stip
 
 GP0 & GP1: UART port to pycontrol
+    
     GP0 -> DIO_B
+    
     GP1 -> DIO_A
 
+
 GP2 & GP3: LED STRIP
+    
     GP2 -> CI
+    
     GP3 -> DI
+
 
 To set up the code in a new Raspberry Pi Pico
 1. Connect Raspberry to computer via USB
